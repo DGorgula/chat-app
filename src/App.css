@@ -12,6 +12,17 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+#login-form{
+display: flex;
+flex-direction: column;
+width: 60%;
+align-items: center;
+margin: 0 auto;
+
+}
+button{
+  width: 10rem;
+}
 
 .App-header {
   background-color: #282c34;
@@ -27,6 +38,101 @@
 .App-link {
   color: #61dafb;
 }
+#header{
+
+    margin: 0;
+    padding: 0;
+
+}
+h1{
+  margin:0;
+  padding: 0;
+}
+#message-form{
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width:100%;
+}
+#message-input{
+  margin: 20px 0;
+  height: 1rem;
+
+  font-family: inherit;
+  /* line-height: 2rem; */
+  padding: 0.5rem;
+  width: 80%;
+  border-radius: 10px;
+  /* line-break: loose; */
+  }
+  #submit-button{
+    height: 2rem;
+    width: 2rem;
+    cursor: pointer;
+  }
+#chat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+align-items: space-around;
+max-height: 80vh;
+overflow-y: scroll;
+padding: 0 1rem;
+}
+#chat-fade{
+position: fixed;
+height: 3rem;
+width: 100vw;
+z-index:1;
+background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255, 255, 255, 1));
+}
+.received {
+  background-color: #dedefa;
+  align-self: end;
+}
+.sender-name{
+  position: absolute;
+  margin: 0;
+  top: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.8rem;
+}
+.received .sender-name{
+  right: 1rem;
+}
+.sent .sender-name{
+  left: 1rem;
+}
+.sent {
+  align-self: start;
+  background-color: #defae3;
+}
+.message{
+  position: relative;
+  border-radius: 20px;
+  width: 80%;
+  text-align: left;
+  margin: 0.5rem 0;
+}
+.content {
+  margin: 0.5rem 1rem;
+  line-break:anywhere;
+}
+.message-date{
+  margin: 0.5rem 1rem;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+.profile-image{
+  position: absolute;
+  max-height: 3rem;
+  top: 1rem;
+  left: 1rem;
+  border-radius: 50%;
+}
+
 
 @keyframes App-logo-spin {
   from {
