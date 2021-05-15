@@ -145,6 +145,7 @@ h1 {
 }
 
 .message-div .profile-image {
+  background-color: #e8ffe6;
   max-height: 2.8rem;
   margin-right: 1rem;
   border-radius: 50%;

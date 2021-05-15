@@ -96,6 +96,7 @@ align-self: end;
       display: flex;
       align-items: center;
       .profile-image{
+          background-color: rgb(232, 255, 230);
         max-height: 2.8rem;
         margin-right: 1rem;
         border-radius: 50%;
@@ -108,7 +109,6 @@ align-self: end;
             margin-left: 1rem;
 
         }
-        // justify-self: end;
     }
     .sender-name{
         position: absolute;
