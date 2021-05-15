@@ -11,3 +11,10 @@ export const setUser = (user) => {
         user
     }
 }
+
+export const setRoomName = (roomName) => {
+    return {
+        type: "SET_ROOM_NAME",
+        roomName
+    }
+}

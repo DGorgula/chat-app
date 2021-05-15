@@ -4,7 +4,7 @@ import Message from './Message'
 import { useParams } from 'react-router-dom';
 import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore'
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser } from '../store/actions/actions';
+import { setUser, setRoomName } from '../store/actions/actions';
 import Header from './Header';
 
 function ChatRoom({ dbUser }) {
@@ -31,6 +31,9 @@ function ChatRoom({ dbUser }) {
                     const newUser = {
                         displayName: displayName,
                     }
+                    const chatRoomName = result.data().roomName;
+                    console.log(chatRoomName);
+                    dispatch(setRoomName(chatRoomName))
                     dispatch(setUser(newUser))
                 }
                 else {
@@ -42,7 +45,22 @@ function ChatRoom({ dbUser }) {
     useEffect(() => {
         setTimeout(() => bottomestDiv?.current ? bottomestDiv.current.scrollIntoView({ behavior: 'smooth' }) : null, 500);
     }, []);
-    console.log(user);
+
+    useEffect(() => {
+        bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })
+    }, [messages])
+    async function sendMessage(e) {
+        e.preventDefault();
+        const { displayName } = (firebase.auth().currentUser || user)
+        const newMessage = messageToSendRef.current.value;
+        const sendingStatus = await messagesRef.add({
+            createdAt: new Date(),
+            content: newMessage,
+            displayName: displayName
+        })
+        messageToSendRef.current.value = '';
+        bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })
+    }
     if (!user) {
 
         return (
@@ -57,19 +75,6 @@ function ChatRoom({ dbUser }) {
         )
 
     }
-    async function sendMessage(e) {
-        e.preventDefault();
-        const { displayName } = (firebase.auth().currentUser || user)
-        const newMessage = messageToSendRef.current.value;
-        const sendingStatus = await messagesRef.add({
-            createdAt: new Date(),
-            content: newMessage,
-            displayName: displayName
-        })
-        messageToSendRef.current.value = '';
-        bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })
-    }
-
 
     return (
         <>

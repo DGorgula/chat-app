@@ -13,6 +13,9 @@ const reducers = (state = initialState, action) => {
         case "SET_USER":
             newState.user = action.user;
             break;
+        case "SET_ROOM_NAME":
+            newState.roomName = action.roomName;
+            break;
         default:
             newState = state
             break;
