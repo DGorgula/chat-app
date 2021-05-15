@@ -95,9 +95,19 @@ align-self: end;
       position: relative;
       display: flex;
       align-items: center;
+      .profile-image{
+        max-height: 2.8rem;
+        margin-right: 1rem;
+        border-radius: 50%;
+      }
     }
     .received-div{
         flex-direction: row-reverse;
+        .profile-image{
+            margin-right: 0rem;
+            margin-left: 1rem;
+
+        }
         // justify-self: end;
     }
     .sender-name{
@@ -124,11 +134,5 @@ align-self: end;
     font-size: 0.8rem;
     color: rgba(0, 0, 0, 0.6);
   }
-  .profile-image{
-    // position: absolute;
-    max-height: 3rem;
-    top: 1rem;
-    left: 1rem;
-    border-radius: 50%;
-  }
+ 
   
