@@ -1,3 +1,4 @@
+$background: white;
 #App {
     display: grid;
     height: 100%;
@@ -20,7 +21,7 @@
   
   #header{
     grid-column: 1;
-
+background-color: $background;
   display: flex;
       margin: 0;
       padding: 0;
@@ -35,6 +36,7 @@
       grid-row: 3;
       grid-column: 1;
       padding: 1rem 0;
+      background-color: $background;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -57,6 +59,7 @@
       cursor: pointer;
     }
   #chat {
+      background-color: $background;
       grid-row: 2;
       grid-column: 1;
     position: relative;
@@ -66,39 +69,51 @@
   max-height: 100%;
   overflow-y: scroll;
   padding: 0 1rem;
-  }
-  #chat-fade{
-  position: fixed;
-  height: 3rem;
-  width: 100vw;
-  z-index:1;
-  background: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255, 255, 255, 1));
-  }
-  .received {
-    background-color: #dedefa;
-    align-self: end;
-    .sender-name{
-       right: 1rem;
-     }
-  }
-  .sender-name{
-    position: absolute;
-    margin: 0;
-    top: 0.8rem;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 0.8rem;
-  }
-  
-  .sent {
+}
+#chat-fade{
+    position: fixed;
+    height: 3rem;
+    width: 100vw;
+    z-index:1;
+    background: linear-gradient(0deg, rgba(255,255,255,0) 0%, $background);
+}
+.sent {
+    $sent: true;
     align-self: start;
     background-color: #defae3;
-  }
-  .message{
-    position: relative;
-    border-radius: 20px;
-    width: 80%;
-    text-align: left;
-    margin: 0.5rem 0;
+}
+.received {
+    $sent: false;
+background-color: #dedefa;
+align-self: end;
+    margin-right: 2rem;
+    .sender-name{
+        right: 1rem;
+    }
+}
+  .message-div{
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .received-div{
+        flex-direction: row-reverse;
+        // justify-self: end;
+    }
+    .sender-name{
+        position: absolute;
+        margin: 0;
+        top: 0.8rem;
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 0.8rem;
+    }
+    
+    .message{
+          position: relative;
+        width: 80%;
+        border-radius: 20px;
+        margin: 0.5rem 0;
+        text-align: left;
   }
   .content {
     margin: 0.5rem 1rem;
@@ -110,7 +125,7 @@
     color: rgba(0, 0, 0, 0.6);
   }
   .profile-image{
-    position: absolute;
+    // position: absolute;
     max-height: 3rem;
     top: 1rem;
     left: 1rem;

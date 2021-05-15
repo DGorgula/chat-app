@@ -21,14 +21,6 @@ exports.detectEvilUsers = functions.firestore
 
     });
 
-exports.getSubCollections = functions.https.onCall(async (data, context) => {
-    const docPath = data.docPath;
-    const collections = await admin.firestore().doc(docPath).listCollections();
-    const collectionIds = collections.map(col => col.id);
-
-    return { collections: collectionIds };
-
-});
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
