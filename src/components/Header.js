@@ -6,7 +6,7 @@ import { setUser } from '../store/actions/actions';
 
 function Header({ user }) {
     const dispatch = useDispatch();
-    const roomName = useSelector(state => state.roomName)
+    const room = useSelector(state => state.room)
 
     const logout = () => {
         firebase.auth().signOut();
@@ -14,7 +14,7 @@ function Header({ user }) {
     }
     return (
         <div id="header">
-            <h1>{roomName || "ChatRoom"}</h1>
+            <h1>{room?.roomName}</h1>
             {user.displayName}
             <button onClick={logout}>Logout</button>
         </div>

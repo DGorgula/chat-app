@@ -1,10 +1,9 @@
 const initialState = {
-    chatRoomId: null,
+    room: null,
     user: null
 }
 
 const reducers = (state = initialState, action) => {
-    console.log("in the reducer: ", state);
     let newState = { ...state };
     switch (action.type) {
         case "SET_CHAT_ROOM_ID":
@@ -13,8 +12,9 @@ const reducers = (state = initialState, action) => {
         case "SET_USER":
             newState.user = action.user;
             break;
-        case "SET_ROOM_NAME":
-            newState.roomName = action.roomName;
+        case "SET_ROOM":
+            console.log("roomSet", action.room);
+            newState.room = action.room;
             break;
         default:
             newState = state

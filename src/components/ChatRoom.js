@@ -4,7 +4,7 @@ import Message from './Message'
 import { useParams } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser, setRoomName } from '../store/actions/actions';
+import { setUser, setRoom } from '../store/actions/actions';
 import Header from './Header';
 
 
@@ -35,9 +35,8 @@ function ChatRoom({ dbUser }) {
                         displayName,
                         photoURL: imageUrl
                     }
-                    const chatRoomName = result.data().roomName;
-                    console.log(chatRoomName);
-                    dispatch(setRoomName(chatRoomName))
+                    const chatRoom = result.data();
+                    dispatch(setRoom(chatRoom))
                     dispatch(setUser(newUser))
                 }
                 else {

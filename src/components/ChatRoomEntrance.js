@@ -2,38 +2,27 @@ import { useState, useEffect, useRef } from 'react'
 import firebase from 'firebase';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUser } from '../store/actions/actions';
+import { setUser, setRoom } from '../store/actions/actions';
 import { v4 as generateId, v3 as generatePassword } from 'uuid';
 import Header from './Header';
 import userEvent from '@testing-library/user-event';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function ChatRoomEntrance({ chatId, dbUser }) {
     const firestore = firebase.firestore();
     const storage = firebase.storage();
     const [chosedChatRoomId, setChosedChatRoomId] = useState(false);
-    const [rooms, setRooms] = useState([]);
     const [creatingNewRoom, setCreatingNewRoom] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const newRoomNameRef = useRef()
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
 
-    useEffect(() => {
-        if (dbUser && rooms.length === 0) {
-            firestore.collection('chats').where('uid', '==', dbUser.uid).get()
-                .then(result => {
-                    const newRoomsArray = []
-                    result.forEach(function (doc) {
-                        newRoomsArray.push(doc.data())
-                        console.log(doc.data());
-                    });
-                    console.log(newRoomsArray);
-                    setRooms(newRoomsArray)
-                    dispatch(setUser(dbUser));
-                })
-                .catch(err => console.log(err))
-        }
+    const roomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
+    const [rooms] = useCollectionData(roomsRef);
 
+    useEffect(() => {
+        if (dbUser) dispatch(setUser(dbUser));
     }, [])
     console.log(rooms);
     if (chosedChatRoomId) return < Redirect to={`/${chosedChatRoomId}`} />
@@ -44,10 +33,10 @@ function ChatRoomEntrance({ chatId, dbUser }) {
         const chatId = generateId()
         const newRoom = {
             chatId,
-            password: generateId().slice(0, 7),
+            password: generateId().slice(0, 8),
             roomName,
             isOpen: true,
-            roomPhotoUrl: imageUrl,
+            roomPhotoUrl: imageUrl || '',
             createdAt: new Date(),
             uid: user.uid
         }
@@ -59,6 +48,8 @@ function ChatRoomEntrance({ chatId, dbUser }) {
         setCreatingNewRoom(true)
     }
     function chooseRoom(chatId) {
+
+        dispatch(setRoom(rooms.find(room => room.chatId === chatId)))
         setChosedChatRoomId(chatId);
     }
 
@@ -69,7 +60,7 @@ function ChatRoomEntrance({ chatId, dbUser }) {
                 <input type="file" onChange={fileUpload} />
                 <input type="submit" value="Create Room" />
             </form> : null}
-            {rooms.length >= 0 ? (<div id="room-blocks-div">{rooms.map((room, i) => {
+            {rooms?.length >= 0 ? (<div id="room-blocks-div">{rooms?.map((room, i) => {
                 return (
                     <div key={i} className="roomBlock" onClick={() => chooseRoom(room.chatId)}>
                         <span className="room-name" >{room.roomName}</span>
