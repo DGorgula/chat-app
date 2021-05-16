@@ -9,7 +9,6 @@ import SignUp from './components/SignUp'
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser } from './store/actions/actions';
-import { v4 as uuid } from 'uuid';
 import Header from './components/Header';
 
 

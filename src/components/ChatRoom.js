@@ -7,10 +7,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setRoomName } from '../store/actions/actions';
 import Header from './Header';
 
+
 function ChatRoom({ dbUser }) {
-    const { chatId } = useParams();
     const firestore = firebase.firestore();
     const storage = firebase.storage();
+    const { chatId } = useParams();
     const messagesRef = firestore.collection('chats').doc(chatId).collection('messages');
     const query = messagesRef.orderBy('createdAt', 'desc').limit(25);
     const [messages] = useCollectionData(query);
@@ -30,9 +31,6 @@ function ChatRoom({ dbUser }) {
                 console.log(result.data().password, passwordRef.current.value);
                 if (result.data().password === passwordRef.current.value) {
                     const displayName = nicknameRef.current.value;
-
-                    // console.log(photoURL.files[0]);
-                    // console.log(photoURL.files[0].toString());
                     const newUser = {
                         displayName,
                         photoURL: imageUrl
@@ -45,21 +43,6 @@ function ChatRoom({ dbUser }) {
                 else {
                     setError("wrong password...")
                 }
-            })
-    }
-    console.log(imageUrl);
-    function fileUpload(e) {
-        const photo = e.target.files[0];
-        const uploadTask = storage.ref(photo.name).put(photo);
-        uploadTask.on('state_changed',
-            () => {
-            }, (err) => {
-                console.log(err)
-            }, () => {
-                storage.ref().child(photo.name).getDownloadURL()
-                    .then(fireBaseUrl => {
-                        setImageUrl(fireBaseUrl)
-                    })
             })
     }
 
@@ -84,6 +67,20 @@ function ChatRoom({ dbUser }) {
         })
         messageToSendRef.current.value = '';
         bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })
+    }
+    function fileUpload(e) {
+        const photo = e.target.files[0];
+        const uploadTask = storage.ref(photo.name).put(photo);
+        uploadTask.on('state_changed',
+            () => {
+            }, (err) => {
+                console.log(err)
+            }, () => {
+                storage.ref().child(photo.name).getDownloadURL()
+                    .then(fireBaseUrl => {
+                        setImageUrl(fireBaseUrl);
+                    })
+            })
     }
     if (!user) {
 
@@ -123,5 +120,7 @@ function ChatRoom({ dbUser }) {
         </>
     )
 }
+
+
 
 export default ChatRoom

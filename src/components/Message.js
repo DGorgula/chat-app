@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
-
+import { getFormattedDate } from './ChatRoomEntrance'
 
 function Message({ message }) {
     const [genericAvatar, setGenericAvatar] = useState();
@@ -22,7 +22,7 @@ function Message({ message }) {
                 {messageClass === 'received' ? <><p className="sender-name">{message.displayName}</p><br /></> : null}
 
                 <p className="content">{message.content}</p>
-                <p className="message-date">{messageDate + messageTime}</p>
+                <p className="message-date">{getFormattedDate(message.createdAt)}</p>
             </div>
         </div>
     )
