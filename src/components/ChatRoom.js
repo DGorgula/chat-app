@@ -86,7 +86,7 @@ function ChatRoom({ dbUser }) {
         return (
             <>
                 <form onSubmit={checkPassword}>
-                    {error && <p>{error}</p>}
+                    {error && <p className="error">{error}</p>}
                     <input ref={nicknameRef} type="text" placeholder="Nickname" required />
                     <input ref={passwordRef} type="password" placeholder="ChatRoom password" required />
                     <input type="file" onChange={fileUpload} />

@@ -13,18 +13,26 @@ function ChatRoomEntrance({ chatId, dbUser }) {
     const storage = firebase.storage();
     const [chosedChatRoomId, setChosedChatRoomId] = useState(false);
     const [creatingNewRoom, setCreatingNewRoom] = useState(false);
+    const [creatingNewForeignRoom, setCreatingNewForeignRoom] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const newRoomNameRef = useRef()
+    const roomIdRef = useRef()
+    const roomPasswordRef = useRef()
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
+    const [formError, setFormError] = useState()
+    const [foreignFormError, setForeignFormError] = useState()
 
-    const roomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
-    const [rooms] = useCollectionData(roomsRef);
+    const myRoomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
+    const [myRooms] = useCollectionData(myRoomsRef);
+
+    const otherRoomsRef = firestore.collection('chats').where('allowedUids', 'array-contains', dbUser.uid);
+    const [otherRooms] = useCollectionData(otherRoomsRef);
 
     useEffect(() => {
         if (dbUser) dispatch(setUser(dbUser));
     }, [])
-    console.log(rooms);
+    console.log(otherRooms);
     if (chosedChatRoomId) return < Redirect to={`/${chosedChatRoomId}`} />
 
     function createNewRoom(e) {
@@ -41,28 +49,64 @@ function ChatRoomEntrance({ chatId, dbUser }) {
             uid: user.uid
         }
         firestore.collection('chats').doc(chatId).set(newRoom)
-        setCreatingNewRoom(false);
+            .then(() => setCreatingNewRoom(false))
+            .catch(err => {
+                console.log("Form Error: ", err);
+                setFormError("The file you uploaded is not an image or larger than 1024X1024")
+            })
 
+    }
+    function createNewForeignRoom(e) {
+        e.preventDefault();
+        const chatId = roomIdRef.current.value;
+        const chatPassword = roomPasswordRef.current.value;
+        console.log(chatId);
+        firestore.collection('chats').doc(chatId).get()
+            .then(doc => {
+                console.log("in the then");
+                if (doc.data().password !== chatPassword) {
+                    console.log("password wrong!");
+                    return setForeignFormError("password incorrect")
+                }
+                return firestore.collection('chats').doc(chatId)
+                    .update({ allowedUids: [dbUser.uid] }, { merge: true });
+
+            })
+            .catch(err => {
+                console.log("Foreign Form submit error: ", err);
+                return setForeignFormError("chatId doesn't exist");
+            })
     }
     function openNewRoomForm(e) {
         setCreatingNewRoom(true)
     }
+    function openNewForeignRoomForm(e) {
+        setCreatingNewForeignRoom(true)
+    }
     function chooseRoom(chatId) {
 
-        dispatch(setRoom(rooms.find(room => room.chatId === chatId)))
+        dispatch(setRoom(myRooms.find(room => room.chatId === chatId)))
         setChosedChatRoomId(chatId);
     }
 
     return (
         <div>
             {creatingNewRoom ? <form id='new-room-form' onSubmit={createNewRoom}>
+                {formError ? <p className="error">{formError}</p> : null}
                 <input ref={newRoomNameRef} type="text" placeholder="Room Name" required />
                 <input type="file" onChange={fileUpload} />
                 <input type="submit" value="Create Room" />
             </form> : null}
-            {rooms?.length >= 0 ? (<div id="room-blocks-div">{rooms?.map((room, i) => {
+            {creatingNewForeignRoom ? <form id='new-room-form' onSubmit={createNewForeignRoom}>
+                {foreignFormError ? <p className="error">{foreignFormError}</p> : null}
+                <input ref={roomIdRef} type="text" placeholder="Room ID" required />
+                <input ref={roomPasswordRef} type="password" placeholder="Room password" required />
+                <input type="submit" value="Add Room" />
+            </form> : null}
+            {myRooms?.length >= 0 ? (<div className="room-blocks-div"><h3 className="rooms-div-title">My Rooms</h3>{myRooms?.map((room, i) => {
+
                 return (
-                    <div key={i} className="roomBlock" onClick={() => chooseRoom(room.chatId)}>
+                    <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
                         <span className="room-name" >{room.roomName}</span>
                         <span className="room-status" >{room.isOpen?.toString()}</span>
                         <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
@@ -74,7 +118,21 @@ function ChatRoomEntrance({ chatId, dbUser }) {
                 </div>
             </div>
             ) : <p>{"Loading..."}</p>}
+            {otherRooms?.length >= 0 ? (<div className="room-blocks-div"><h3 className="rooms-div-title">Other Rooms</h3>{otherRooms?.map((room, i) => {
 
+                return (
+                    <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
+                        <span className="room-name" >{room.roomName}</span>
+                        <span className="room-status" >{room.isOpen?.toString()}</span>
+                        <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
+                    </div>
+                );
+            })}
+                <div id="add-room" onClick={openNewForeignRoomForm}>
+                    +
+</div>
+            </div>
+            ) : <p>{"Loading..."}</p>}
 
         </div>
     )
