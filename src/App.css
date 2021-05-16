@@ -28,6 +28,56 @@ button {
   width: 10rem;
 }
 
+#menu {
+  padding: 0;
+  margin: 0;
+  -ms-grid-row: 2;
+  grid-row: 2;
+  position: fixed;
+  right: 0;
+  top: 4.2rem;
+  z-index: 2;
+  background-color: white;
+  border-end-start-radius: 0.5rem;
+  -webkit-box-shadow: 0px 0px 4px 0px;
+          box-shadow: 0px 0px 4px 0px;
+}
+
+#menu hr {
+  padding: 0;
+  margin: 0 auto;
+  width: 80%;
+  color: rgba(0, 0, 0, 0.1);
+}
+
+#menu li {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  padding: 0.7rem 2rem;
+  list-style: none;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#menu li:last-child {
+  border-radius: inherit;
+}
+
+#menu li:hover {
+  background-color: #fafafa;
+}
+
+#menu li .menu-icon {
+  margin-right: 1rem;
+}
+
 #header {
   -ms-grid-column: 1;
   grid-column: 1;
@@ -35,14 +85,59 @@ button {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin: 0;
-  padding: 0;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin: 0;
+  padding: 0;
+  z-index: 3;
+}
+
+#header #group-image {
+  -ms-grid-column: 1;
+  grid-column: 1;
+  max-height: 2.8rem;
+  border-radius: 50%;
+  margin: 0.7rem 0;
+}
+
+#header button {
+  max-width: 3.5rem;
+}
+
+#header #left-div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#header #left-div #names-div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+  margin-left: 0.5rem;
+}
+
+#header #left-div #left-arrow {
+  cursor: pointer;
+}
+
+#header #right-div #menu-icon {
+  cursor: pointer;
+  margin-right: 1rem;
 }
 
 h1 {
@@ -107,12 +202,15 @@ h1 {
 }
 
 #chat-fade {
+  margin: 0;
+  padding: 0;
+  left: 0;
   position: fixed;
   height: 3rem;
-  width: 100vw;
+  width: 100%;
   z-index: 1;
-  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255, 255, 255, 0)), to(white));
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, white);
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(255, 255, 255, 0)), to(rgba(0, 0, 0, 0.6)));
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.6));
 }
 
 .sent {
@@ -146,7 +244,8 @@ h1 {
 
 .message-div .profile-image {
   background-color: #e8ffe6;
-  max-height: 2.8rem;
+  height: 2.8rem;
+  width: 2.8rem;
   margin-right: 1rem;
   border-radius: 50%;
 }
@@ -188,5 +287,11 @@ h1 {
   margin: 0.5rem 1rem;
   font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.2rem;
+  }
 }
 /*# sourceMappingURL=App.css.map */
