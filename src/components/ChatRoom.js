@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import firebase from 'firebase'
 import Message from './Message'
 import { useParams } from 'react-router-dom';
-import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firestore'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setRoomName } from '../store/actions/actions';
 import Header from './Header';
@@ -10,7 +10,7 @@ import Header from './Header';
 function ChatRoom({ dbUser }) {
     const { chatId } = useParams();
     const firestore = firebase.firestore();
-    const checkedIfChatOpenRef = useRef(false)
+    const storage = firebase.storage();
     const messagesRef = firestore.collection('chats').doc(chatId).collection('messages');
     const query = messagesRef.orderBy('createdAt', 'desc').limit(25);
     const [messages] = useCollectionData(query);
@@ -22,6 +22,7 @@ function ChatRoom({ dbUser }) {
     const passwordRef = useRef();
     const dispatch = useDispatch();
     const [error, setError] = useState('')
+    const [imageUrl, setImageUrl] = useState()
     function checkPassword(e) {
         e.preventDefault();
         firestore.collection('chats').doc(chatId).get()
@@ -29,10 +30,12 @@ function ChatRoom({ dbUser }) {
                 console.log(result.data().password, passwordRef.current.value);
                 if (result.data().password === passwordRef.current.value) {
                     const displayName = nicknameRef.current.value;
-                    const photoURL = imageUrlRef.current.value;
+
+                    // console.log(photoURL.files[0]);
+                    // console.log(photoURL.files[0].toString());
                     const newUser = {
                         displayName,
-                        photoURL
+                        photoURL: imageUrl
                     }
                     const chatRoomName = result.data().roomName;
                     console.log(chatRoomName);
@@ -42,6 +45,21 @@ function ChatRoom({ dbUser }) {
                 else {
                     setError("wrong password...")
                 }
+            })
+    }
+    console.log(imageUrl);
+    function fileUpload(e) {
+        const photo = e.target.files[0];
+        const uploadTask = storage.ref(photo.name).put(photo);
+        uploadTask.on('state_changed',
+            () => {
+            }, (err) => {
+                console.log(err)
+            }, () => {
+                storage.ref().child(photo.name).getDownloadURL()
+                    .then(fireBaseUrl => {
+                        setImageUrl(fireBaseUrl)
+                    })
             })
     }
 
@@ -58,7 +76,7 @@ function ChatRoom({ dbUser }) {
         const { displayName } = (firebase.auth().currentUser || user)
         const { photoURL } = (firebase.auth().currentUser || user)
         const newMessage = messageToSendRef.current.value;
-        const sendingStatus = await messagesRef.add({
+        await messagesRef.add({
             createdAt: new Date(),
             content: newMessage,
             displayName,
@@ -75,7 +93,7 @@ function ChatRoom({ dbUser }) {
                     {error && <p>{error}</p>}
                     <input ref={nicknameRef} type="text" placeholder="Nickname" required />
                     <input ref={passwordRef} type="password" placeholder="ChatRoom password" required />
-                    <input ref={imageUrlRef} type="text" placeholder="ChatRoom password" required />
+                    <input type="file" onChange={fileUpload} />
                     <input type="submit" value="Submit" />
                 </form>
             </>
@@ -90,7 +108,7 @@ function ChatRoom({ dbUser }) {
                 <div id="chat-fade"></div>
                 {messages?.sort((a, b) => a - b).map((message, i) => {
                     return (
-                        message.displayName ? <Message key={i} message={message} /> : null
+                        <Message key={i} message={message} />
                     )
                 })}
                 <div ref={bottomestDiv}></div>
