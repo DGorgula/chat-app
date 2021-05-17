@@ -24,6 +24,7 @@ function ChatRoom({ dbUser }) {
     const dispatch = useDispatch();
     const [error, setError] = useState('')
     const [imageUrl, setImageUrl] = useState()
+    const [messageInputHeight, setMessageInputHeight] = useState({})
     function checkPassword(e) {
         e.preventDefault();
         firestore.collection('chats').doc(chatId).get()
@@ -55,9 +56,10 @@ function ChatRoom({ dbUser }) {
 
     async function sendMessage(e) {
         e.preventDefault();
+        const newMessage = messageToSendRef.current.value;
+        if (!newMessage) return;
         const { displayName } = (firebase.auth().currentUser || user)
         const { photoURL } = (firebase.auth().currentUser || user)
-        const newMessage = messageToSendRef.current.value;
         await messagesRef.add({
             createdAt: new Date(),
             content: newMessage,
@@ -65,6 +67,7 @@ function ChatRoom({ dbUser }) {
             photoURL: photoURL || ""
         })
         messageToSendRef.current.value = '';
+        setMessageInputHeight({})
         bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })
     }
     function fileUpload(e) {
@@ -89,16 +92,27 @@ function ChatRoom({ dbUser }) {
                     {error && <p className="error">{error}</p>}
                     <input ref={nicknameRef} type="text" placeholder="Nickname" required />
                     <input ref={passwordRef} type="password" placeholder="ChatRoom password" required />
-                    <input type="file" onChange={fileUpload} />
+                    <input className="file-input" type="file" onChange={fileUpload} />
                     <input type="submit" value="Submit" />
                 </form>
             </>
         )
 
     }
-
+    function changeHeightIfNeeded(e) {
+        const inputHeight = e.target.clientHeight
+        const scrollHeight = e.target.scrollHeight
+        if (!messageInputHeight.height) {
+            setMessageInputHeight({ height: inputHeight })
+        }
+        console.log(e.target);
+        console.log(scrollHeight, inputHeight);
+        if (scrollHeight > inputHeight && inputHeight <= 200) {
+            setMessageInputHeight({ height: scrollHeight + 10 })
+        }
+    }
     return (
-        <>
+        <div id="chat-room">
             <Header user={user} />
             <div id="chat">
                 <div id="chat-fade"></div>
@@ -111,12 +125,12 @@ function ChatRoom({ dbUser }) {
             </div>
 
             <form id="message-form" onSubmit={sendMessage}>
-                <textarea id="message-input" ref={messageToSendRef} type='text' onFocus={() => bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })} placeholder="Send your message here!" />
+                <textarea id="message-input" ref={messageToSendRef} type='text' onChange={changeHeightIfNeeded} onFocus={() => bottomestDiv.current.scrollIntoView({ behavior: 'smooth' })} style={messageInputHeight} placeholder="Send your message here!" />
                 <svg id="submit-button" onClick={sendMessage} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-90deg-up" viewBox="0 0 16 16">
                     <path fillRule="evenodd" d="M4.854 1.146a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L4 2.707V12.5A2.5 2.5 0 0 0 6.5 15h8a.5.5 0 0 0 0-1h-8A1.5 1.5 0 0 1 5 12.5V2.707l3.146 3.147a.5.5 0 1 0 .708-.708l-4-4z" />
                 </svg>
             </form>
-        </>
+        </div>
     )
 }
 

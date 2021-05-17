@@ -22,17 +22,19 @@ function ChatRoomEntrance({ chatId, dbUser }) {
     const user = useSelector(state => state.user)
     const [formError, setFormError] = useState()
     const [foreignFormError, setForeignFormError] = useState()
-
+    console.log("name: ", user?.displayName);
+    console.log("id: ", user?.uid);
+    console.log("photoURL: ", user?.photoURL);
+    console.log("password: ", user?.password);
     const myRoomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
     const [myRooms] = useCollectionData(myRoomsRef);
 
     const otherRoomsRef = firestore.collection('chats').where('allowedUids', 'array-contains', dbUser.uid);
     const [otherRooms] = useCollectionData(otherRoomsRef);
-
     useEffect(() => {
-        if (dbUser) dispatch(setUser(dbUser));
+        console.log(dbUser, dbUser.photoURL);
+        if (dbUser) dispatch(setUser(dbUser))
     }, [])
-    console.log(otherRooms);
     if (chosedChatRoomId) return < Redirect to={`/${chosedChatRoomId}`} />
 
     function createNewRoom(e) {
@@ -56,6 +58,7 @@ function ChatRoomEntrance({ chatId, dbUser }) {
             })
 
     }
+
     function createNewForeignRoom(e) {
         e.preventDefault();
         const chatId = roomIdRef.current.value;
@@ -91,10 +94,11 @@ function ChatRoomEntrance({ chatId, dbUser }) {
 
     return (
         <div>
+            <Header user={user} />
             {creatingNewRoom ? <form id='new-room-form' onSubmit={createNewRoom}>
                 {formError ? <p className="error">{formError}</p> : null}
                 <input ref={newRoomNameRef} type="text" placeholder="Room Name" required />
-                <input type="file" onChange={fileUpload} />
+                <input className="file-input" type="file" onChange={fileUpload} />
                 <input type="submit" value="Create Room" />
             </form> : null}
             {creatingNewForeignRoom ? <form id='new-room-form' onSubmit={createNewForeignRoom}>
@@ -103,7 +107,8 @@ function ChatRoomEntrance({ chatId, dbUser }) {
                 <input ref={roomPasswordRef} type="password" placeholder="Room password" required />
                 <input type="submit" value="Add Room" />
             </form> : null}
-            {myRooms?.length >= 0 ? (<div className="room-blocks-div"><h3 className="rooms-div-title">My Rooms</h3>{myRooms?.map((room, i) => {
+            <h3 className="rooms-div-title">My Rooms</h3>
+            {myRooms?.length >= 0 ? (<div className="room-blocks-div">{myRooms?.map((room, i) => {
 
                 return (
                     <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
@@ -118,7 +123,8 @@ function ChatRoomEntrance({ chatId, dbUser }) {
                 </div>
             </div>
             ) : <p>{"Loading..."}</p>}
-            {otherRooms?.length >= 0 ? (<div className="room-blocks-div"><h3 className="rooms-div-title">Other Rooms</h3>{otherRooms?.map((room, i) => {
+            <h3 className="rooms-div-title">Other Rooms</h3>
+            {otherRooms?.length >= 0 ? (<div className="room-blocks-div">{otherRooms?.map((room, i) => {
 
                 return (
                     <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>

@@ -1,23 +1,109 @@
 $background: white;
 #App {
+    height: 100%;
+    text-align: center;
+  }
+  #chat-room{
     display: grid;
     height: 100%;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr auto ;
-    text-align: center;
+    grid-template-rows: auto 1fr auto;
   }
-  
-  #login-form{
+  button{
+    margin: 0.6rem 0 0 0 ;
+    padding: 0.8rem;
+    width: 15rem;
+    font-weight: bolder;
+    border-radius: 0.3rem;
+    outline: none;
+    background-color: #f6bd4b;
+    border: 1px solid black;
+    cursor: pointer;
+    &:hover{
+      background-color: chocolate;
+      transition: 0.3s;
+    }
+}
+.file-label{
+  display: flex;
+  width: 20rem;
+  // padding: 1.5rem;
+  flex-direction: column;
+  justify-content: center;
+  // align-items: center;
+  .file-input{
+margin-top: 1rem;
+  }
+}
+h1, h3{
+  color: #e75a4d;
+  font-size: 3rem;
+  text-shadow: darkred 4px 4px;
+}
+  #sign{
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    // grid-template-columns: auto auto auto;
+    height: 100%;
+
+   h1{
+    font-size: 6rem;
+
+   }
+  #sign-form{
+    display: flex;  
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    // grid-column: 2;
+      height: 100%;
+      margin: 0 auto;
+
+.ref-input, .file-label{
+    outline: none;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 0.6rem;
+    border-radius: 0.3rem;
+    margin: 0 0 0.6rem 0 ;
+    width: 15rem;
+    border: 1px solid black;
+    &::placeholder{
+        text-align: center;
+        outline: none;
+    }
+    &:focus{
+        width: 20rem;
+
+        transition: 0.3s;
+        &::placeholder {
+            color: rgba(0, 0, 0, 0.4);
+        }
+    }
+    &:not(focus) {
+        transition: 0.3s;
+        
+    }
+}
+}
+#other-sign-button{
+    margin-top:1rem;
+    margin-left:1rem;
+    width: 5rem;
+
+}
+}
+
+
+  #sign-form{
   display: flex;
   flex-direction: column;
   width: 60%;
   align-items: center;
-  margin: 0 auto;
+//   margin: 0 auto;
   
   }
-  button{
-    width: 10rem;
-  }
+  
   #menu{
       padding: 0;
       margin: 0;
@@ -46,6 +132,10 @@ $background: white;
           cursor: pointer;
           display: flex;
           justify-content: space-between;
+          &:first-child{
+              text-decoration: line-through;
+              color:rgba(0, 0, 0, 0.4)
+          }
           &:last-child{
               border-radius: inherit;
           }
@@ -61,7 +151,7 @@ $background: white;
     grid-column: 1;
     // display: grid;
     // grid-template-columns: auto 1fr auto;
-background-color: $background;
+background-color: #4b5786;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -84,7 +174,7 @@ background-color: $background;
       #names-div{
           display: flex;
           flex-direction: column;
-          align-items: start;
+          align-items: flex-start;
           margin-left: 0.5rem;
       }
       #left-arrow{
@@ -97,31 +187,40 @@ background-color: $background;
           margin-right: 1rem;
       }
   }
-  }
-  h1{
-    margin:0;
-    padding: 0;
-  }
+}
+h1{
+  margin:0;
+  padding: 0;
+}
   #message-form{
       grid-row: 3;
       grid-column: 1;
       padding: 1rem 0;
-      background-color: $background;
+      // background-color: $background;
     display: flex;
     justify-content: space-around;
     align-items: center;
     width:100%;
   }
   #message-input{
-    // margin: 20px 0;
-    height: 1rem;
-  
+    height: 2rem;
+    outline: none;
+    border:none;
+    box-sizing:border-box;
+    resize:none;
+    // overflow: hidden;
     font-family: inherit;
-    /* line-height: 2rem; */
     padding: 0.5rem;
     width: 80%;
     border-radius: 10px;
-    /* line-break: loose; */
+    &:focus{
+      outline: none;
+    }
+    }
+    #hiddendiv {
+      display: none;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     #submit-button{
       height: 2rem;
@@ -129,7 +228,7 @@ background-color: $background;
       cursor: pointer;
     }
   #chat {
-      background-color: $background;
+      // background-color: $background;
       grid-row: 2;
       grid-column: 1;
     position: relative;
@@ -152,12 +251,15 @@ background-color: $background;
 }
 .sent {
     $sent: true;
-    align-self: start;
-    background-color: #defae3;
+    align-self: flex-start;
+    background-color:rgba($color: #defae3, $alpha: 0.7);
+    border: 1px solid #defae3;
 }
 .received {
     $sent: false;
-background-color: #dedefa;
+// background-color: #dedefa;
+background-color:rgba($color: #dedefa, $alpha: 0.7);
+border: 1px solid #dedefa;
 align-self: end;
     margin-right: 2rem;
     .sender-name{
@@ -208,7 +310,56 @@ align-self: end;
     font-size: 0.8rem;
     color: rgba(0, 0, 0, 0.6);
   }
- 
+.rooms-div-title{
+  text-align: left;
+  margin-left: 1rem;
+}
+.room-blocks-div{
+display: flex;
+flex-wrap: wrap;
+
+  .room-block{
+    position:relative;
+    width:13rem;
+    margin: 1rem;
+    margin-top: none;
+    height: 7rem;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: rgba($color: #adaad9, $alpha: 0.5);
+    padding-top: 2rem;
+    cursor: pointer;
+    &:hover{
+    background-color: rgba($color: #adaad9, $alpha: 0.8);
+      .room-name{
+        transition: 0.3s ease;
+      }
+    }
+    &:not(hover){
+      transition: 0.3s;
+    }
+.room-name{
+font-weight: bolder;
+font-size: 1.3rem;
+}
+.room-status{
+position: absolute;
+top: 0;
+right: 0.3rem;
+}
+.room-date{
+position: absolute;
+bottom: 0.3rem;
+right: 1rem;
+font-size: 0.8rem;
+font-weight: bolder;
+}
+
+
+  }
+}
+  
   @media (max-width: 600px){
       h1{
           font-size: 1.2rem;
