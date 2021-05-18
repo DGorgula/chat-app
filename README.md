@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# [ChatApp Link]("https://pivotal-myth-229817.web.app/")
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React Firebase chat web application.
+The application uses Firebase storage, firestore and authentication, using a few  security "rules".
 
-## Available Scripts
 
-In the project directory, you can run:
+## Setup:
+1. Create firebase app
+2. clone the ChatApp [repo]("https://github.com/DGorgula/chat-app")
+3. in your clone root folder run "npm install"
+4. run "npm start"
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## About ChatApp:
+ChatApp includes the following react routes:
+ - '/': User's dashboard.
+ - '/:ChatId': The ChatApp room linked to the provided ChatId.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+    Both routes will serve the SignIn/SignUp page if not logged in.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### SignIn/SignUp
+The user can SignUp with:
+1. Email & Password
+2. Facebook
+3. Google
 
-### `yarn build`
+### User's dashboard
+The user's dashboard presents all user's ChatApp rooms, and all The ChatApp rooms the user already gained access for.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+A user can both create and join to a ChatApp room through the dashboard as mentioned before.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+A user can gain access to a ChatApp room by 2 methods:
+1. Click the dashboard "+" link under the "Friend's Rooms". (A form should appear)
+ - Enter the friend's ChatApp room Id.
+    The extention to the root url.
+    Example:
+        The ChatApp room Id of "https://pivotal-myth-229817.firebaseapp.com/4fa220e6-fa53-4375-8cc9-433f07dcac25" is "4fa220e6-fa53-4375-8cc9-433f07dcac25")
+- Enter the ChatApp room's password.
+    Can be found as a link in the NavBar.
 
-### `yarn eject`
+A user can chat with everyone logged to the same ChatApp room.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The user can invite new ChatApp partners to a ChatApp room using the Chatapp link and sending the partner the ChatApp room password.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Enjoy The application
+created by [Danks]("https://github.com/DGorgula")
