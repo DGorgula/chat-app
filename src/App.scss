@@ -374,8 +374,29 @@ font-weight: bolder;
     font-size: 4rem;
     #plus{
       color: rgba($color: black, $alpha: 0.7);
-      
+      margin: 0;
+      padding: 0;   
     }
+  }
+
+  .chosen-form{
+    // position: absolute;
+    cursor: initial;
+    font-size: 2rem;
+    background-color:  rgba($color: #adaad9, $alpha: 0.8);;
+    height: 20rem;
+    width: 21rem;
+   h4{
+     margin-top: 0;
+     margin-bottom: 1.5rem;
+   }
+   .close-form-button{
+     position: absolute;
+     top:1rem;
+     right: 1rem;
+     cursor: pointer;
+   }
+
   }
 }
 
@@ -393,6 +414,19 @@ font-weight: bolder;
     flex-direction: column;
     height: 100%
   }
+
+  #new-room-form{
+    // position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .file-label{
+      font-size: initial;
+    }
+    
+  }
+  
   @media (max-width: 600px){
       h1{
           font-size: 1.2rem;

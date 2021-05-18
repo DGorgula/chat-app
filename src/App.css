@@ -525,6 +525,28 @@ h1 {
 
 .room-blocks-div .plus #plus {
   color: rgba(0, 0, 0, 0.7);
+  margin: 0;
+  padding: 0;
+}
+
+.room-blocks-div .chosen-form {
+  cursor: initial;
+  font-size: 2rem;
+  background-color: rgba(173, 170, 217, 0.8);
+  height: 20rem;
+  width: 21rem;
+}
+
+.room-blocks-div .chosen-form h4 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.room-blocks-div .chosen-form .close-form-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
 }
 
 #room-entrance {
@@ -555,6 +577,26 @@ h1 {
       -ms-flex-direction: column;
           flex-direction: column;
   height: 100%;
+}
+
+#new-room-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#new-room-form .file-label {
+  font-size: initial;
 }
 
 @media (max-width: 600px) {
