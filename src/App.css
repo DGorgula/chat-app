@@ -606,6 +606,11 @@ h1 {
   font-size: initial;
 }
 
+#copy-password {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   h1 {
     font-size: 1.2rem;
