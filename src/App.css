@@ -55,6 +55,65 @@ h1, h3 {
   text-shadow: darkred 4px 4px;
 }
 
+.ref-input, .file-label {
+  outline: none;
+  background-color: white;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0.6rem;
+  border-radius: 0.3rem;
+  margin: 0 0 0.6rem 0;
+  width: 15rem;
+  border: 1px solid black;
+}
+
+.ref-input::-webkit-input-placeholder, .file-label::-webkit-input-placeholder {
+  text-align: center;
+  outline: none;
+}
+
+.ref-input:-ms-input-placeholder, .file-label:-ms-input-placeholder {
+  text-align: center;
+  outline: none;
+}
+
+.ref-input::-ms-input-placeholder, .file-label::-ms-input-placeholder {
+  text-align: center;
+  outline: none;
+}
+
+.ref-input::placeholder, .file-label::placeholder {
+  text-align: center;
+  outline: none;
+}
+
+.ref-input:focus, .file-label:focus {
+  width: 20rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.ref-input:focus::-webkit-input-placeholder, .file-label:focus::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.ref-input:focus:-ms-input-placeholder, .file-label:focus:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.ref-input:focus::-ms-input-placeholder, .file-label:focus::-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.ref-input:focus::placeholder, .file-label:focus::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.ref-input:not(focus), .file-label:not(focus) {
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
 #sign {
   display: -ms-grid;
   display: grid;
@@ -83,65 +142,6 @@ h1, h3 {
           justify-content: center;
   height: 100%;
   margin: 0 auto;
-}
-
-#sign #sign-form .ref-input, #sign #sign-form .file-label {
-  outline: none;
-  background-color: white;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 0.6rem;
-  border-radius: 0.3rem;
-  margin: 0 0 0.6rem 0;
-  width: 15rem;
-  border: 1px solid black;
-}
-
-#sign #sign-form .ref-input::-webkit-input-placeholder, #sign #sign-form .file-label::-webkit-input-placeholder {
-  text-align: center;
-  outline: none;
-}
-
-#sign #sign-form .ref-input:-ms-input-placeholder, #sign #sign-form .file-label:-ms-input-placeholder {
-  text-align: center;
-  outline: none;
-}
-
-#sign #sign-form .ref-input::-ms-input-placeholder, #sign #sign-form .file-label::-ms-input-placeholder {
-  text-align: center;
-  outline: none;
-}
-
-#sign #sign-form .ref-input::placeholder, #sign #sign-form .file-label::placeholder {
-  text-align: center;
-  outline: none;
-}
-
-#sign #sign-form .ref-input:focus, #sign #sign-form .file-label:focus {
-  width: 20rem;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-}
-
-#sign #sign-form .ref-input:focus::-webkit-input-placeholder, #sign #sign-form .file-label:focus::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-#sign #sign-form .ref-input:focus:-ms-input-placeholder, #sign #sign-form .file-label:focus:-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-#sign #sign-form .ref-input:focus::-ms-input-placeholder, #sign #sign-form .file-label:focus::-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-#sign #sign-form .ref-input:focus::placeholder, #sign #sign-form .file-label:focus::placeholder {
-  color: rgba(0, 0, 0, 0.4);
-}
-
-#sign #sign-form .ref-input:not(focus), #sign #sign-form .file-label:not(focus) {
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
 }
 
 #sign #other-sign-button {
@@ -500,6 +500,36 @@ h1 {
   right: 1rem;
   font-size: 0.8rem;
   font-weight: bolder;
+}
+
+#room-entrance {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100%;
+}
+
+#room-entrance-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
 }
 
 @media (max-width: 600px) {

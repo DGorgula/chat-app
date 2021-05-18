@@ -19,7 +19,6 @@ function App() {
   const [dbUser] = useAuthState(auth);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState()
   const userConnected = useSelector(state => state.dbUser)
-  console.log();
   const screenWidthpx = window.screen.width;
   let backgroundImageName;
   switch (true) {
@@ -51,7 +50,11 @@ function App() {
               <Sign />
             }
           </Route>
-          <Route path="/:chatId" render={(props) => <ChatRoom {...props} dbUser={dbUser} />} />
+          <Route path="/:chatId" >
+            {dbUser ?
+              <ChatRoom dbUser={dbUser} />
+              : <Sign />}
+          </Route>
         </BrowserRouter>
       </div>
       :

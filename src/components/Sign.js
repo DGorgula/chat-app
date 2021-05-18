@@ -5,6 +5,7 @@ import { setChatRoomId } from '../store/actions/actions';
 
 
 function Sign() {
+    console.log("sdg");
     const dispatch = useDispatch();
     const storage = firebase.storage();
     const usernameRef = useRef();
@@ -96,13 +97,13 @@ function Sign() {
                     {error ? <p id="login-error">{error}</p> : null}
                     {signState === 'SignUp' &&
                         <>
-                            <input className="ref-input" ref={usernameRef} type="text" placeholder="username" required />
+                            <input className="ref-input" ref={usernameRef} autoFocus type="text" placeholder="username" required />
                             <label className="file-label" htmlFor="file" >Choose Profile Picture:
                                 <input className="file-input" type="file" id="file" onChange={fileUpload} />
                             </label>
                         </>
                     }
-                    <input className="ref-input" ref={emailRef} type="email" placeholder="email" required />
+                    <input className="ref-input" ref={emailRef} autoFocus type="email" placeholder="email" required />
                     <input className="ref-input" ref={passwordRef} type="password" placeholder="password" required />
 
                     <button type="submit" >{signState}</button>

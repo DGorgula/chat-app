@@ -40,6 +40,32 @@ h1, h3{
   font-size: 3rem;
   text-shadow: darkred 4px 4px;
 }
+.ref-input, .file-label{
+  outline: none;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 0.6rem;
+  border-radius: 0.3rem;
+  margin: 0 0 0.6rem 0 ;
+  width: 15rem;
+  border: 1px solid black;
+  &::placeholder{
+      text-align: center;
+      outline: none;
+  }
+  &:focus{
+      width: 20rem;
+
+      transition: 0.3s;
+      &::placeholder {
+          color: rgba(0, 0, 0, 0.4);
+      }
+  }
+  &:not(focus) {
+      transition: 0.3s;
+      
+  }
+}
   #sign{
     display: grid;
     grid-template-rows: auto auto 1fr;
@@ -50,6 +76,7 @@ h1, h3{
     font-size: 6rem;
 
    }
+   
   #sign-form{
     display: flex;  
     flex-direction: column;
@@ -59,32 +86,7 @@ h1, h3{
       height: 100%;
       margin: 0 auto;
 
-.ref-input, .file-label{
-    outline: none;
-    background-color: white;
-    box-sizing: border-box;
-    padding: 0.6rem;
-    border-radius: 0.3rem;
-    margin: 0 0 0.6rem 0 ;
-    width: 15rem;
-    border: 1px solid black;
-    &::placeholder{
-        text-align: center;
-        outline: none;
-    }
-    &:focus{
-        width: 20rem;
 
-        transition: 0.3s;
-        &::placeholder {
-            color: rgba(0, 0, 0, 0.4);
-        }
-    }
-    &:not(focus) {
-        transition: 0.3s;
-        
-    }
-}
 }
 #other-sign-button{
     margin-top:1rem;
@@ -359,7 +361,19 @@ font-weight: bolder;
 
   }
 }
-  
+  #room-entrance{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%
+  }
+  #room-entrance-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%
+  }
   @media (max-width: 600px){
       h1{
           font-size: 1.2rem;

@@ -27,27 +27,34 @@ function ChatRoom({ dbUser }) {
     const [messageInputHeight, setMessageInputHeight] = useState({})
     function checkPassword(e) {
         e.preventDefault();
-        firestore.collection('chats').doc(chatId).get()
-            .then(result => {
-                console.log(result.data().password, passwordRef.current.value);
-                if (result.data().password === passwordRef.current.value) {
-                    const displayName = nicknameRef.current.value;
-                    const newUser = {
-                        displayName,
-                        photoURL: imageUrl
-                    }
-                    const chatRoom = result.data();
-                    dispatch(setRoom(chatRoom))
-                    dispatch(setUser(newUser))
-                }
-                else {
-                    setError("wrong password...")
-                }
-            })
+        firestore.collection('chats').doc(chatId).get().then(result => {
+            console.log(result.data().password, passwordRef.current.value);
+            if (dbUser && result.data().password === passwordRef.current.value) {
+                firestore.collection('chats').doc(chatId)
+                    .update({ allowedUids: [dbUser.uid] }, { merge: true });
+                const chatRoom = result.data();
+                dispatch(setRoom(chatRoom));
+                dispatch(setUser(dbUser));
+            }
+            else {
+                setError("wrong password...")
+            }
+        })
     }
-
+    console.log(user);
     useEffect(() => {
-        setTimeout(() => bottomestDiv?.current ? bottomestDiv.current.scrollIntoView({ behavior: 'smooth' }) : null, 1000);
+        if (user) {
+            return setTimeout(() => bottomestDiv?.current ? bottomestDiv.current.scrollIntoView({ behavior: 'smooth' }) : null, 1000);
+        }
+        firestore.collection('chats').doc(chatId).get()
+            .then(res => {
+                const chatRoom = res.data();
+                const userAllowed = chatRoom?.allowedUids.some(uid => uid === dbUser.uid);
+                if (userAllowed) {
+                    dispatch(setRoom(chatRoom))
+                    dispatch(setUser(dbUser))
+                }
+            });
     }, []);
 
     useEffect(() => {
@@ -88,13 +95,14 @@ function ChatRoom({ dbUser }) {
 
         return (
             <>
-                <form onSubmit={checkPassword}>
-                    {error && <p className="error">{error}</p>}
-                    <input ref={nicknameRef} type="text" placeholder="Nickname" required />
-                    <input ref={passwordRef} type="password" placeholder="ChatRoom password" required />
-                    <input className="file-input" type="file" onChange={fileUpload} />
-                    <input type="submit" value="Submit" />
-                </form>
+                <div id="room-entrance">
+
+                    <form id="room-entrance-form" onSubmit={checkPassword}>
+                        {error && <p className="error">{error}</p>}
+                        <input className="ref-input" ref={passwordRef} autoFocus type="password" placeholder="ChatRoom password" required />
+                        <button type="submit" >Submit</button>
+                    </form>
+                </div>
             </>
         )
 
