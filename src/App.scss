@@ -324,7 +324,7 @@ flex-wrap: wrap;
     position:relative;
     width:13rem;
     margin: 1rem;
-    margin-top: none;
+    margin-top: 0;
     height: 7rem;
     text-align: center;
     border-radius: 10px;
@@ -336,6 +336,11 @@ flex-wrap: wrap;
     background-color: rgba($color: #adaad9, $alpha: 0.8);
       .room-name{
         transition: 0.3s ease;
+      }
+      #plus{
+        transition: 0.3s ease;
+        color:  rgba($color: black, $alpha: 1);
+
       }
     }
     &:not(hover){
@@ -360,7 +365,21 @@ font-weight: bolder;
 
 
   }
+  .plus{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 0;
+    height: 9rem;
+    font-size: 4rem;
+    #plus{
+      color: rgba($color: black, $alpha: 0.7);
+      
+    }
+  }
 }
+
+
   #room-entrance{
     display: flex;
     justify-content: center;
