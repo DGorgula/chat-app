@@ -17,49 +17,25 @@ function App() {
   const storage = firebase.storage();
   const auth = firebase.auth()
   const [dbUser] = useAuthState(auth);
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState()
-  const userConnected = useSelector(state => state.dbUser)
-  const screenWidthpx = window.screen.width;
-  let backgroundImageName;
-  switch (true) {
-    case screenWidthpx < 600:
-      backgroundImageName = 'cosmos-small.png'
-      break;
-    case screenWidthpx > 2000:
-      backgroundImageName = 'cosmos-huge.png'
-      break;
-    default:
-      backgroundImageName = 'cosmos.png'
-      break;
-  }
-  storage.ref().child(backgroundImageName).getDownloadURL()
-    .then(url => {
 
-      setBackgroundImageUrl(url)
-    }
-    )
   return (
-    backgroundImageUrl ?
-      <div id="App" style={{ backgroundImage: `url(${backgroundImageUrl})` }}>
-        {/* <img src={backgroundImageUrl} /> */}
-        <BrowserRouter>
-          <Route exact path="/" >
-            {dbUser ?
-              <ChatRoomEntrance dbUser={dbUser} />
-              :
-              <Sign />
-            }
-          </Route>
-          <Route path="/:chatId" >
-            {dbUser ?
-              <ChatRoom dbUser={dbUser} />
-              : <Sign />}
-          </Route>
-        </BrowserRouter>
-      </div>
-      :
-      "Loading..."
-  );
+    <div id="App" >
+      <BrowserRouter>
+        <Route exact path="/" >
+          {dbUser ?
+            <ChatRoomEntrance dbUser={dbUser} />
+            :
+            <Sign />
+          }
+        </Route>
+        <Route path="/:chatId" >
+          {dbUser ?
+            <ChatRoom dbUser={dbUser} />
+            : <Sign />}
+        </Route>
+      </BrowserRouter>
+    </div>
+  )
 }
 
 export default App;

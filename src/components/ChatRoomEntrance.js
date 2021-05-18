@@ -87,73 +87,77 @@ function ChatRoomEntrance({ chatId, dbUser }) {
     }
 
     return (
-        <div>
+        <div id="chatroom-entrance">
             <Header user={user} />
 
+            <div id="myrooms">
+                <h3 className="rooms-div-title">My Rooms</h3>
+                {myRooms?.length >= 0 ? (<div className="room-blocks-div">{myRooms?.map((room, i) => {
 
-            <h3 className="rooms-div-title">My Rooms</h3>
-            {myRooms?.length >= 0 ? (<div className="room-blocks-div">{myRooms?.map((room, i) => {
-
-                return (
-                    <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
-                        <span className="room-name" >{room.roomName}</span>
-                        <span className="room-status" >{room.isOpen?.toString()}</span>
-                        <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
-                    </div>
-                );
-            })}
-                <div className={`room-block plus ${creatingNewRoom ? "chosen-form" : null}`} onClick={(e) => setCreatingNewRoom(true)}>
-                    {creatingNewRoom ? <form id='new-room-form' onSubmit={createNewRoom}>
-                        <svg onClick={(e) => {
-                            e.stopPropagation();
-                            setCreatingNewRoom(false)
-                        }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
-                            <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
-                        </svg>
-                        <h4>Create New Room</h4>
-                        {formError ? <p className="error">{formError}</p> : null}
-                        <input className="ref-input" ref={newRoomNameRef} type="text" placeholder="Room Name" required />
-                        <label className="file-label" htmlFor="file" >Choose Room Picture:
+                    return (
+                        <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
+                            <span className="room-name" >{room.roomName}</span>
+                            <span className="room-status" >{room.isOpen?.toString()}</span>
+                            <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
+                        </div>
+                    );
+                })}
+                    <div className={`room-block plus ${creatingNewRoom ? "chosen-form" : null}`} onClick={(e) => setCreatingNewRoom(true)}>
+                        {creatingNewRoom ? <form id='new-room-form' onSubmit={createNewRoom}>
+                            <svg onClick={(e) => {
+                                e.stopPropagation();
+                                setCreatingNewRoom(false)
+                            }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
+                                <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
+                            </svg>
+                            <h4>Create New Room</h4>
+                            {formError ? <p className="error">{formError}</p> : null}
+                            <input className="ref-input" ref={newRoomNameRef} type="text" placeholder="Room Name" required />
+                            <label className="file-label" htmlFor="file" >Choose Room Picture:
                                 <input className="file-input" type="file" id="file" onChange={fileUpload} />
-                        </label>
-                        <button type="submit" >"Create Room"</button>
-                    </form> : <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" id="plus" viewBox="0 0 16 16">
-                        <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-                    </svg>}
-                </div>
-            </div>
-            ) : <p>{"Loading..."}</p>}
-            <h3 className="rooms-div-title">Friend's Rooms</h3>
-            {otherRooms?.length >= 0 ? (<div className="room-blocks-div">{otherRooms?.map((room, i) => {
-
-                return (
-                    <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
-                        <span className="room-name" >{room.roomName}</span>
-                        <span className="room-status" >{room.isOpen?.toString()}</span>
-                        <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
+                            </label>
+                            <button type="submit" >"Create Room"</button>
+                        </form> : <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" id="plus" viewBox="0 0 16 16">
+                            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+                        </svg>}
                     </div>
-                );
-            })}
-                <div className={`room-block plus ${creatingNewForeignRoom && "chosen-form"}`} onClick={() => setCreatingNewForeignRoom(true)}>
-                    {creatingNewForeignRoom ? <form id='new-room-form' onSubmit={createNewForeignRoom}>
-                        <svg onClick={(e) => {
-                            e.stopPropagation();
-                            setCreatingNewForeignRoom(false)
-                        }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
-                            <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
-                        </svg>
-                        <h4>Add Friend's Room</h4>
-                        {foreignFormError ? <p className="error">{foreignFormError}</p> : null}
-                        <input className="ref-input" ref={roomIdRef} type="text" placeholder="Room ID" required />
-                        <input className="ref-input" ref={roomPasswordRef} type="password" placeholder="Room password" required />
-                        <button type="submit" >"Add Room"</button>
-                    </form> : <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" id="plus" viewBox="0 0 16 16">
-                        <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
-                    </svg>}
                 </div>
-            </div>
-            ) : <p>{"Loading..."}</p>}
 
+                ) : <p>{"Loading..."}</p>}
+            </div>
+            <div id="friends-rooms">
+
+                <h3 className="rooms-div-title">Friend's Rooms</h3>
+                {otherRooms?.length >= 0 ? (<div className="room-blocks-div">{otherRooms?.map((room, i) => {
+
+                    return (
+                        <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
+                            <span className="room-name" >{room.roomName}</span>
+                            <span className="room-status" >{room.isOpen?.toString()}</span>
+                            <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
+                        </div>
+                    );
+                })}
+                    <div className={`room-block plus ${creatingNewForeignRoom && "chosen-form"}`} onClick={() => setCreatingNewForeignRoom(true)}>
+                        {creatingNewForeignRoom ? <form id='new-room-form' onSubmit={createNewForeignRoom}>
+                            <svg onClick={(e) => {
+                                e.stopPropagation();
+                                setCreatingNewForeignRoom(false)
+                            }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
+                                <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
+                            </svg>
+                            <h4>Add Friend's Room</h4>
+                            {foreignFormError ? <p className="error">{foreignFormError}</p> : null}
+                            <input className="ref-input" ref={roomIdRef} type="text" placeholder="Room ID" required />
+                            <input className="ref-input" ref={roomPasswordRef} type="password" placeholder="Room password" required />
+                            <button type="submit" >"Add Room"</button>
+                        </form> : <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" id="plus" viewBox="0 0 16 16">
+                            <path d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+                        </svg>}
+                    </div>
+                </div>
+                ) : <p>{"Loading..."}</p>}
+            </div>
         </div>
     )
 
