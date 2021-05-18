@@ -3,9 +3,8 @@ import firebase from 'firebase';
 import { Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, setRoom } from '../store/actions/actions';
-import { v4 as generateId, v3 as generatePassword } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import Header from './Header';
-import userEvent from '@testing-library/user-event';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 function ChatRoomEntrance({ dbUser }) {
@@ -20,8 +19,7 @@ function ChatRoomEntrance({ dbUser }) {
     const roomPasswordRef = useRef()
     const dispatch = useDispatch();
     const user = useSelector(state => state.user)
-    const [formError, setFormError] = useState()
-    const [foreignFormError, setForeignFormError] = useState()
+    const [error, setError] = useState()
     const myRoomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
     const [myRooms] = useCollectionData(myRoomsRef);
     const otherRoomsRef = firestore.collection('chats').where('allowedUids', 'array-contains', dbUser.uid);
@@ -42,7 +40,6 @@ function ChatRoomEntrance({ dbUser }) {
                     return (
                         <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
                             <span className="room-name" >{room.roomName}</span>
-                            <span className="room-status" >{room.isOpen?.toString()}</span>
                             <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
                         </div>
                     );
@@ -51,12 +48,13 @@ function ChatRoomEntrance({ dbUser }) {
                         {creatingNewRoom ? <form id='new-room-form' onSubmit={createNewRoom}>
                             <svg onClick={(e) => {
                                 e.stopPropagation();
+                                setError()
                                 setCreatingNewRoom(false)
                             }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
                                 <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
                             </svg>
                             <h4>Create New Room</h4>
-                            {formError ? <p className="error">{formError}</p> : null}
+                            {error ? <p className="error">{error}</p> : null}
                             <input className="ref-input" ref={newRoomNameRef} type="text" placeholder="Room Name" required />
                             <label className="file-label" htmlFor="file" >Choose Room Picture:
                                 <input className="file-input" type="file" id="file" onChange={fileUpload} />
@@ -77,7 +75,6 @@ function ChatRoomEntrance({ dbUser }) {
                     return (
                         <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
                             <span className="room-name" >{room.roomName}</span>
-                            <span className="room-status" >{room.isOpen?.toString()}</span>
                             <span className="room-date" >{getFormattedDate(room.createdAt)}</span>
                         </div>
                     );
@@ -86,12 +83,13 @@ function ChatRoomEntrance({ dbUser }) {
                         {creatingNewForeignRoom ? <form id='new-room-form' onSubmit={createNewForeignRoom}>
                             <svg onClick={(e) => {
                                 e.stopPropagation();
+                                setError()
                                 setCreatingNewForeignRoom(false)
                             }} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="close-form-button" viewBox="0 0 16 16">
                                 <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" />
                             </svg>
                             <h4>Add Friend's Room</h4>
-                            {foreignFormError ? <p className="error">{foreignFormError}</p> : null}
+                            {error ? <p className="error">{error}</p> : null}
                             <input className="ref-input" ref={roomIdRef} type="text" placeholder="Room ID" required />
                             <input className="ref-input" ref={roomPasswordRef} type="password" placeholder="Room password" required />
                             <button type="submit" >"Add Room"</button>
@@ -121,13 +119,13 @@ function ChatRoomEntrance({ dbUser }) {
         firestore.collection('chats').doc(chatId).get()
             .then(doc => {
                 if (doc.data().password !== chatPassword) {
-                    return setForeignFormError("password incorrect")
+                    return setError("password incorrect")
                 }
                 return firestore.collection('chats').doc(chatId)
                     .update({ allowedUids: [dbUser.uid] }, { merge: true });
             })
             .catch(err => {
-                return setForeignFormError("chatId doesn't exist");
+                return setError("chatId doesn't exist");
             })
     }
 
@@ -135,10 +133,10 @@ function ChatRoomEntrance({ dbUser }) {
     function createNewRoom(e) {
         e.preventDefault();
         const roomName = newRoomNameRef.current.value;
-        const chatId = generateId()
+        const chatId = uuid()
         const newRoom = {
             chatId,
-            password: generateId().slice(0, 8),
+            password: uuid().slice(0, 8),
             roomName,
             isOpen: true,
             roomPhotoUrl: imageUrl || '',
@@ -146,10 +144,12 @@ function ChatRoomEntrance({ dbUser }) {
             uid: user.uid
         }
         firestore.collection('chats').doc(chatId).set(newRoom)
-            .then(() => setCreatingNewRoom(false))
+            .then(() => {
+                setError()
+                setCreatingNewRoom(false)
+            })
             .catch(err => {
-                console.log("Form Error: ", err);
-                setFormError("The file you uploaded is not an image or larger than 1024X1024")
+                setError("The file you uploaded is not an image or larger than 1024X1024")
             })
     }
 
@@ -160,7 +160,7 @@ function ChatRoomEntrance({ dbUser }) {
         uploadTask.on('state_changed',
             () => {
             }, (err) => {
-                console.log(err)
+                setError(err.message)
             }, () => {
                 storage.ref().child(photo.name).getDownloadURL()
                     .then(fireBaseUrl => {

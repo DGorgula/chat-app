@@ -19,7 +19,7 @@ function Sign() {
                 <button id="other-sign-button" onClick={() => setSignState(toggleSignString(signState))}>{toggleSignString(signState)}</button>
                 <h1>Welcome to ChatApp</h1>
                 <form id="sign-form" onSubmit={dynamicSignFunction[signState]}>
-                    {error ? <p id="login-error">{error}</p> : null}
+                    {error ? <p className="error">{error}</p> : null}
                     {signState === 'SignUp' &&
                         <>
                             <input className="ref-input" ref={usernameRef} autoFocus type="text" placeholder="username" required />

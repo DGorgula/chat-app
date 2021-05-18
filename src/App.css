@@ -186,46 +186,6 @@ h3 {
           box-shadow: 0px 0px 4px 0px;
 }
 
-#menu hr {
-  padding: 0;
-  margin: 0 auto;
-  width: 80%;
-  color: rgba(0, 0, 0, 0.1);
-}
-
-#menu li {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  padding: 0.7rem 2rem;
-  list-style: none;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-}
-
-#menu li:first-child {
-  text-decoration: line-through;
-  color: rgba(0, 0, 0, 0.4);
-}
-
-#menu li:last-child {
-  border-radius: inherit;
-}
-
-#menu li:hover {
-  background-color: #fafafa;
-}
-
-#menu li .menu-icon {
-  margin-right: 1rem;
-}
-
 #chatroom-entrance {
   height: 100%;
   display: -ms-grid;
@@ -301,9 +261,19 @@ h3 {
   cursor: pointer;
 }
 
-#header #right-div #menu-icon {
+#header #right-div #logout-icon {
   cursor: pointer;
   margin-right: 1rem;
+}
+
+.error {
+  font-size: initial;
+  color: #c90000;
+  font-weight: bolder;
+  padding: 1rem;
+  border: 1px solid #c90000;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.85);
 }
 
 h1 {
