@@ -43,16 +43,14 @@ function ChatRoom({ dbUser }) {
     }
     console.log(user);
     useEffect(() => {
-        if (user) {
-            return setTimeout(() => bottomestDiv?.current ? bottomestDiv.current.scrollIntoView({ behavior: 'smooth' }) : null, 1000);
-        }
         firestore.collection('chats').doc(chatId).get()
             .then(res => {
                 const chatRoom = res.data();
-                const userAllowed = chatRoom?.allowedUids.some(uid => uid === dbUser.uid);
+                const userAllowed = chatRoom?.allowedUids?.some(uid => uid === dbUser.uid);
                 if (userAllowed) {
                     dispatch(setRoom(chatRoom))
                     dispatch(setUser(dbUser))
+                    return setTimeout(() => bottomestDiv?.current ? bottomestDiv.current.scrollIntoView({ behavior: 'smooth' }) : null, 1000);
                 }
             });
     }, []);
