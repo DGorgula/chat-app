@@ -8,7 +8,7 @@ import Header from './Header';
 import userEvent from '@testing-library/user-event';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-function ChatRoomEntrance({ chatId, dbUser }) {
+function ChatRoomEntrance({ dbUser }) {
     const firestore = firebase.firestore();
     const storage = firebase.storage();
     const [chosedChatRoomId, setChosedChatRoomId] = useState(false);
@@ -22,78 +22,23 @@ function ChatRoomEntrance({ chatId, dbUser }) {
     const user = useSelector(state => state.user)
     const [formError, setFormError] = useState()
     const [foreignFormError, setForeignFormError] = useState()
-    console.log("name: ", user?.displayName);
-    console.log("id: ", user?.uid);
-    console.log("photoURL: ", user?.photoURL);
-    console.log("password: ", user?.password);
     const myRoomsRef = firestore.collection('chats').where('uid', '==', dbUser.uid);
     const [myRooms] = useCollectionData(myRoomsRef);
-
     const otherRoomsRef = firestore.collection('chats').where('allowedUids', 'array-contains', dbUser.uid);
     const [otherRooms] = useCollectionData(otherRoomsRef);
+
     useEffect(() => {
-        console.log(dbUser, dbUser.photoURL);
         if (dbUser) dispatch(setUser(dbUser))
     }, [])
+
     if (chosedChatRoomId) return < Redirect to={`/${chosedChatRoomId}`} />
-
-    function createNewRoom(e) {
-        e.preventDefault();
-        const roomName = newRoomNameRef.current.value;
-        const chatId = generateId()
-        const newRoom = {
-            chatId,
-            password: generateId().slice(0, 8),
-            roomName,
-            isOpen: true,
-            roomPhotoUrl: imageUrl || '',
-            createdAt: new Date(),
-            uid: user.uid
-        }
-        firestore.collection('chats').doc(chatId).set(newRoom)
-            .then(() => setCreatingNewRoom(false))
-            .catch(err => {
-                console.log("Form Error: ", err);
-                setFormError("The file you uploaded is not an image or larger than 1024X1024")
-            })
-
-    }
-
-    function createNewForeignRoom(e) {
-        e.preventDefault();
-        const chatId = roomIdRef.current.value;
-        const chatPassword = roomPasswordRef.current.value;
-        console.log(chatId);
-        firestore.collection('chats').doc(chatId).get()
-            .then(doc => {
-                console.log("in the then");
-                if (doc.data().password !== chatPassword) {
-                    console.log("password wrong!");
-                    return setForeignFormError("password incorrect")
-                }
-                return firestore.collection('chats').doc(chatId)
-                    .update({ allowedUids: [dbUser.uid] }, { merge: true });
-
-            })
-            .catch(err => {
-                console.log("Foreign Form submit error: ", err);
-                return setForeignFormError("chatId doesn't exist");
-            })
-    }
-    function chooseRoom(chatId) {
-
-        dispatch(setRoom(myRooms.find(room => room.chatId === chatId)))
-        setChosedChatRoomId(chatId);
-    }
 
     return (
         <div id="chatroom-entrance">
             <Header user={user} />
-
             <div id="myrooms">
                 <h3 className="rooms-div-title">My Rooms</h3>
                 {myRooms?.length >= 0 ? (<div className="room-blocks-div">{myRooms?.map((room, i) => {
-
                     return (
                         <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
                             <span className="room-name" >{room.roomName}</span>
@@ -129,7 +74,6 @@ function ChatRoomEntrance({ chatId, dbUser }) {
 
                 <h3 className="rooms-div-title">Friend's Rooms</h3>
                 {otherRooms?.length >= 0 ? (<div className="room-blocks-div">{otherRooms?.map((room, i) => {
-
                     return (
                         <div key={i} className="room-block" onClick={() => chooseRoom(room.chatId)}>
                             <span className="room-name" >{room.roomName}</span>
@@ -161,6 +105,55 @@ function ChatRoomEntrance({ chatId, dbUser }) {
         </div>
     )
 
+    // Functions:
+    // ===========
+
+    //  sets the chosen chat room.
+    function chooseRoom(chatId) {
+
+        dispatch(setRoom(myRooms.find(room => room.chatId === chatId)))
+        setChosedChatRoomId(chatId);
+    }
+    function createNewForeignRoom(e) {
+        e.preventDefault();
+        const chatId = roomIdRef.current.value;
+        const chatPassword = roomPasswordRef.current.value;
+        firestore.collection('chats').doc(chatId).get()
+            .then(doc => {
+                if (doc.data().password !== chatPassword) {
+                    return setForeignFormError("password incorrect")
+                }
+                return firestore.collection('chats').doc(chatId)
+                    .update({ allowedUids: [dbUser.uid] }, { merge: true });
+            })
+            .catch(err => {
+                return setForeignFormError("chatId doesn't exist");
+            })
+    }
+
+    //  creates a new room
+    function createNewRoom(e) {
+        e.preventDefault();
+        const roomName = newRoomNameRef.current.value;
+        const chatId = generateId()
+        const newRoom = {
+            chatId,
+            password: generateId().slice(0, 8),
+            roomName,
+            isOpen: true,
+            roomPhotoUrl: imageUrl || '',
+            createdAt: new Date(),
+            uid: user.uid
+        }
+        firestore.collection('chats').doc(chatId).set(newRoom)
+            .then(() => setCreatingNewRoom(false))
+            .catch(err => {
+                console.log("Form Error: ", err);
+                setFormError("The file you uploaded is not an image or larger than 1024X1024")
+            })
+    }
+
+    // uploads a file and sets it in a state for future use.
     function fileUpload(e) {
         const photo = e.target.files[0];
         const uploadTask = storage.ref(photo.name).put(photo);
@@ -176,11 +169,12 @@ function ChatRoomEntrance({ chatId, dbUser }) {
             })
     }
 }
-export function getFormattedDate(dateObject) {
-    const rawDate = new Date(dateObject?.seconds * 1000 + dateObject?.nanoseconds / 1000000);
 
+//      sets the firestore date ready to render. exports for use in chatroom component.
+export function getFormattedDate(dateObject) {
+    const rawDate = new Date(dateObject.seconds * 1000);
     const time = `${rawDate.getHours()}:${rawDate.getMinutes().toString().length === 1 ? '0' + rawDate.getMinutes() : rawDate.getMinutes()}`;
-    const date = rawDate.getDay() !== new Date().getDay() ? `${rawDate.getDay()}/${rawDate.getMonth()}/${rawDate.getFullYear()} ` : '';
+    const date = (rawDate.getDate() !== new Date().getDate()) ? `${rawDate.getDate()}/${rawDate.getMonth() + 1}/${rawDate.getFullYear()} ` : '';
 
     return date + ' ' + time;
 }

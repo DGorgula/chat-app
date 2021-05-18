@@ -30,10 +30,8 @@ $background: white;
 .file-label{
   display: flex;
   width: 20rem;
-  // padding: 1.5rem;
   flex-direction: column;
   justify-content: center;
-  // align-items: center;
   .file-input{
 margin-top: 1rem;
   }
@@ -75,7 +73,6 @@ h3{
   #sign{
     display: grid;
     grid-template-rows: auto auto 1fr;
-    // grid-template-columns: auto auto auto;
     height: 100%;
 
    h1{
@@ -88,7 +85,6 @@ h3{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    // grid-column: 2;
       height: 100%;
       margin: 0 auto;
 
@@ -108,7 +104,6 @@ h3{
   flex-direction: column;
   width: 60%;
   align-items: center;
-//   margin: 0 auto;
   
   }
   
@@ -122,7 +117,6 @@ h3{
       z-index: 2;
       background-color: $background;
       border-end-start-radius: 0.5rem;
-    //   border-end-end-radius: 1rem;
       box-shadow: 0px 0px 4px 0px;
       
       hr{
@@ -132,8 +126,6 @@ h3{
           color:rgba(0, 0, 0, 0.1);
       }
       li{
-        //   border-top: 1px solid black;
-        // width: 100%;
         user-select: none;
           padding: 0.7rem 2rem;
           list-style: none;
@@ -168,8 +160,6 @@ grid-row: 3;
 }
   #header{
     grid-column: 1;
-    // display: grid;
-    // grid-template-columns: auto 1fr auto;
 background-color: #4b5786;
   display: flex;
   justify-content: space-between;
@@ -215,7 +205,6 @@ h1{
       grid-row: 3;
       grid-column: 1;
       padding: 1rem 0;
-      // background-color: $background;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -227,10 +216,9 @@ h1{
     border:none;
     box-sizing:border-box;
     resize:none;
-    // overflow: hidden;
     font-family: inherit;
     padding: 0.5rem;
-    width: 80%;
+    width: 85%;
     border-radius: 10px;
     &:focus{
       outline: none;
@@ -241,13 +229,22 @@ h1{
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-    #submit-button{
-      height: 2rem;
-      width: 2rem;
+    #send-button{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      height: 48px;
+      width: 48px;
       cursor: pointer;
+      background-color: white;
+      padding: 16px;
+      border-radius: 50%;
+    }
+    #send-svg{
+      margin-left: -10px;
+      margin-top: -6px;
     }
   #chat {
-      // background-color: $background;
       grid-row: 2;
       grid-column: 1;
     position: relative;
@@ -257,6 +254,7 @@ h1{
   max-height: 100%;
   overflow-y: scroll;
   padding: 0 1rem;
+ 
 }
 #chat-fade{
     margin: 0;
@@ -276,7 +274,6 @@ h1{
 }
 .received {
     $sent: false;
-// background-color: #dedefa;
 background-color:rgba($color: #dedefa, $alpha: 0.7);
 border: 1px solid #dedefa;
 align-self: end;
@@ -397,7 +394,6 @@ font-weight: bolder;
   }
 
   .chosen-form{
-    // position: absolute;
     cursor: initial;
     font-size: 2rem;
     background-color:  rgba($color: #adaad9, $alpha: 0.8);;
@@ -433,7 +429,6 @@ font-weight: bolder;
   }
 
   #new-room-form{
-    // position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;

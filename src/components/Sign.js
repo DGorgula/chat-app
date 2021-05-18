@@ -1,12 +1,7 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import firebase from 'firebase';
-import { useSelector, useDispatch } from 'react-redux';
-import { setChatRoomId } from '../store/actions/actions';
-
 
 function Sign() {
-    console.log("sdg");
-    const dispatch = useDispatch();
     const storage = firebase.storage();
     const usernameRef = useRef();
     const emailRef = useRef();
@@ -18,76 +13,6 @@ function Sign() {
         SignIn, SignUp
     }
 
-    const SignUsingGoogle = (e) => {
-        e.preventDefault();
-        const provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithPopup(provider)
-            .catch(err => setError(err.message))
-    }
-
-    const SignUsingFacebook = (e) => {
-        e.preventDefault();
-
-        const provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider)
-            .catch(err => setError(err.message))
-    }
-
-    function SignIn(e) {
-        e.preventDefault();
-        console.log("blas");
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(console.log)
-            .catch(err => {
-                console.log("error", err.message);
-                setError(err.message)
-            })
-    }
-
-    function SignUp(e) {
-        e.preventDefault();
-        console.log("blas");
-        const email = emailRef.current.value;
-        const password = passwordRef.current.value;
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(res => {
-                console.log(res);
-                const username = usernameRef.current.value;
-                firebase.auth().currentUser.updateProfile({
-                    displayName: username,
-                    photoURL: photoUrl || ""
-                })
-
-
-
-            })
-            .catch(err => {
-                console.log("error", err.message);
-                setError(err.message)
-            })
-    }
-    function fileUpload(e) {
-        const photo = e.target.files[0];
-        const uploadTask = storage.ref(photo.name).put(photo);
-        uploadTask.on('state_changed',
-            () => {
-            }, (err) => {
-                console.log(err)
-            }, () => {
-                storage.ref().child(photo.name).getDownloadURL()
-                    .then(fireBaseUrl => {
-                        setPhotoUrl(fireBaseUrl);
-                    })
-            })
-    }
-
-    function toggleSignString(string) {
-        if (string === 'SignIn') return 'SignUp'
-        return 'SignIn'
-    }
-    // firebase.auth().createUserWithEmailAndPassword(email, password)
     return (
         <>
             <div id="sign">
@@ -114,6 +39,75 @@ function Sign() {
             </div>
         </>
     )
+    // Functions:
+    // ===========
+
+    // signIn or signup with google
+    function SignUsingGoogle(e) {
+        e.preventDefault();
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+            .catch(err => setError(err.message))
+    }
+
+    // signIn or signup with facebook
+    function SignUsingFacebook(e) {
+        e.preventDefault();
+        const provider = new firebase.auth.FacebookAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+            .catch(err => setError(err.message))
+    }
+
+    // signIn with Email and Password
+    function SignIn(e) {
+        e.preventDefault();
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .catch(err => {
+                setError(err.message)
+            })
+    }
+
+    // signup with Email and Password
+    function SignUp(e) {
+        e.preventDefault();
+        const email = emailRef.current.value;
+        const password = passwordRef.current.value;
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(res => {
+                const username = usernameRef.current.value;
+                firebase.auth().currentUser.updateProfile({
+                    displayName: username,
+                    photoURL: photoUrl || ""
+                })
+            })
+            .catch(err => {
+                setError(err.message)
+            })
+    }
+
+    // uploads an image to storage
+    function fileUpload(e) {
+        const photo = e.target.files[0];
+        const uploadTask = storage.ref(photo.name).put(photo);
+        uploadTask.on('state_changed',
+            () => {
+            }, (err) => {
+                setError(err.message);
+            }, () => {
+                storage.ref().child(photo.name).getDownloadURL()
+                    .then(fireBaseUrl => {
+                        setPhotoUrl(fireBaseUrl);
+                    })
+            })
+    }
+
+    // toggles the component state between signIn and signUp.
+    function toggleSignString(string) {
+        if (string === 'SignIn') return 'SignUp'
+        return 'SignIn'
+    }
 }
 
 export default Sign

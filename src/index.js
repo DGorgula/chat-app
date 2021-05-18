@@ -7,8 +7,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Route } from 'react-router';
-import ChatRoom from './components/ChatRoom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCOMy-d6CSZMcOmpTsypNQY7TQhCz8vle0",
